@@ -1,7 +1,10 @@
 @extends('students.layout')
 @section('content')
  
- 
+ <div class="row mt-5">
+    <div class="col-md-4">
+</div>
+<div class="col-md-4">
 <div class="card">
   <div class="card-header">Students Page</div>
   <div class="card-body">
@@ -17,4 +20,8 @@
     </hr>
   
   </div>
+</div>
+</div>
+<div class="col-md-4">
+</div>
 </div>
