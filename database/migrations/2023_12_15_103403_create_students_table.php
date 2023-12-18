@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->default('');
                 $table->string('password')->default(''); 
                     $table->string('mobile');
+                    $table->string('image')->default('');
             $table->timestamps();
         });
     }
