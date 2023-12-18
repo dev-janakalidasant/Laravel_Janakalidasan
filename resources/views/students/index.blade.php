@@ -5,11 +5,19 @@
         <div class="row">
         <div class="col-md-1">
 </div>
+<?php
+    // Retrieve user data from session
+    $session = session();
+    $userData = $session->get('user_data');
+    // print_r($userData);
+    ?>
             <div class="col-md-10">
+            <h4>Name : <?php echo ($userData['name']) ?></h4>
                 <div class="card">
                     <div class="card-header">
                         <h2>All Details</h2>
                     </div>
+                
                     <div class="card-body">
                         <a href="{{ url('/student/create') }}" class="btn btn-success btn-sm" title="Add New Student">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
