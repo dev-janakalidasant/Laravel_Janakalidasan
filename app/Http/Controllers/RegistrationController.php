@@ -7,7 +7,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use App\Models\Admin;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 class RegistrationController extends Controller
 {
     /**
@@ -15,7 +18,7 @@ class RegistrationController extends Controller
      */
     public function index(): View
     {
-        
+
         return view('students.register');
     }
 
@@ -23,49 +26,103 @@ class RegistrationController extends Controller
      * Show the form for creating a new resource.
      */
 
-     public function login(Request $request): RedirectResponse
-     {
-        $model= new Admin();
-        $email = $request->input('email');
-        $password = $request->input('password');
-        $user = $model->where('email', $email)
-        ->where('password', $password)
-        ->first();
+    public function login(Request $request): RedirectResponse
+    {
+        // Validation rules
+        $rules = [
+            'email' => 'required|email|max:255',
+            'password' => 'required',
+        ];
+
+        // Validate the request data
+        $validatedData = $request->validate($rules);
+
+        // Convert email to lowercase
+        $email = strtolower($validatedData['email']);
+        $password = $validatedData['password'];
+
+        // Check if user exists with the given email
+        $user = Admin::where('email', $email)->first();
+
         if ($user) {
-            $session = $request->session();
-            $userData = [
-                'name' => $user->name,
-                // Add other necessary user data
-            ];
-            $session->put('user_data', $userData);
-            return redirect()->to('dashboard');
+            if ($user->password === $password) {
+                
+               $profileState = 0;
+                $profilemodel = new Profile();
+                $profiledata['adminprofile'] = $profilemodel->all();
+
+                foreach ($profiledata['adminprofile'] as $profile) {
+                    if ($user['id'] == $profile['admin_id']) {
+                        // Set profile state to '1' and exit the loop
+                        $profileState = 1;
+                        break;
+                    }
+                }
+                
+                $session = $request->session();
+                $userData = [
+                    'name' => $user->name,
+                    'id' => $user->id,
+                    'state' => $profileState,
+                    // Add other necessary user data
+                ];
+                $session->put('user_data', $userData);
+                // $session->forget('entered_email');
+                return redirect()->to('dashboard');
+            } else {
+                // Invalid email or password
+                // $request->session()->put('entered_email', $email);
+                return redirect()->to('/')->with('error', 'Invalid password');
+            }
         }
-        else{
-            return redirect()->to('/')->with('error', 'Invalid email or password');
+        else {
+            return redirect()->to('/')->with('error_email', 'Invalid email');
         }
-    
-    
-     }
+
+     
+    }
+
+
     public function store(Request $request): RedirectResponse
     {
-    
+        // Validation rules
+        $rules = [
+            'name' => 'required|min:3|alpha',
+            'email' => 'required|email|unique:admin|regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/|max:255',
+            'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+        ];
+
+        // Custom validation messages
+        $messages = [
+            'name.min' => 'Name should be at least 3 characters.',
+            'name.alpha' => 'Name should contain only alphabets.',
+            'email.email' => 'Please provide a valid email address.',
+            'email.unique' => 'This email is already in use.',
+            'email.regex' => 'Please provide a valid email address.',
+            'password.min' => 'Password should be at least 8 characters.',
+            'password.regex' => 'Password should contain at least one lowercase letter, one uppercase letter, and one number.',
+        ];
+
+        // Validate the request data
+        $validatedData = $request->validate($rules, $messages);
 
         // Create a new admin record
         Admin::create([
-            'email' => $request->input('email'),
-            'password' => $request->input('password'),
-            'name' => $request->input('name'),
+            'email' => strtolower($validatedData['email']),
+            'password' => $validatedData['password'],
+            'name' => $validatedData['name'],
         ]);
 
         return redirect('/')->with('success', 'Admin added successfully.');
     }
-    
+
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        
+
     }
 
     /**
