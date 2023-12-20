@@ -38,6 +38,7 @@
       </div>
       <br>
       <input type="submit" value="Save Profile" class="btn btn-success">
+      <a href="{{url('dashboard')}}" style="text-decoration:none;color:white;"><button class="btn btn-danger">Go back</bitton></a>
     </form>
  
 

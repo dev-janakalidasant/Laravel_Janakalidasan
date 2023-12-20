@@ -36,3 +36,5 @@ Route::post("/createprofile", [ProfileController::class,'store']);
 
 Route::get("/profileUpdate", [ProfileController::class,'edit']);
 Route::post("/updateprofile", [ProfileController::class,'update']);
+
+Route::get("/logout", [RegistrationController::class,'logout']);

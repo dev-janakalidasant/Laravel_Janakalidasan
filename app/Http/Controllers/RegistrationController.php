@@ -25,9 +25,16 @@ class RegistrationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-
+    public function logout()
+    {
+        Auth::logout();
+    
+        // Redirect to the login page after logout
+        return redirect('/');
+    }
     public function login(Request $request): RedirectResponse
     {
+      
         // Validation rules
         $rules = [
             'email' => 'required|email|max:255',
@@ -72,7 +79,7 @@ class RegistrationController extends Controller
             } else {
                 // Invalid email or password
                 // $request->session()->put('entered_email', $email);
-                return redirect()->to('/')->with('error', 'Invalid password');
+                return redirect()->to('/')->with('error', 'Invalid password')->with('email',$email);
             }
         }
         else {

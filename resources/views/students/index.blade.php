@@ -12,24 +12,34 @@
     // print_r($userData);
     ?>
         <div class="col-md-10">
-            <div style="display:flex;justify-content:space-between">
+            <div class="row">
+                <div class="col-lg-9">
                 <h4>Name :
                     <?php echo ($userData['name']) ?>
                 </h4>
 
+                </div>
+                <div class="col-lg-3">
+                <div style="display:flex;justify-content:space-between">
+              
 
-                <?php if ($userData['state'] == '1') : ?>
-                <a href="{{url('profileUpdate' )}}"><button class="btn btn-success">Update Profile</button></a>
-                <?php endif; ?>
+              <?php if ($userData['state'] == '1') : ?>
+              <a href="{{url('profileUpdate' )}}"><button class="btn btn-success">Update Profile</button></a>
+              <?php endif; ?>
 
-                <?php if ($userData['state'] == '0') : ?>
-                <a href="{{url('profile' )}}"><button class="btn btn-success">Create Profile</button></a>
-                <?php endif; ?>
+              <?php if ($userData['state'] == '0') : ?>
+              <a href="{{url('profile' )}}"><button class="btn btn-success">Create Profile</button></a>
+              <?php endif; ?>
 
+              <a href="{{url('logout')}}" style="text-decoration:none;color:white;"><button
+                      class="btn btn-danger">Log out</bitton></a>
 
-
+          </div>
+                </div>
             </div>
 
+       
+            <br>
             <div class="card">
                 <div class="card-header">
                     <h2>All Details</h2>

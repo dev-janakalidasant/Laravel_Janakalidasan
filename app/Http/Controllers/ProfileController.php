@@ -95,7 +95,7 @@ class ProfileController extends Controller
             $file->storeAs('profileimage', $fileName, 'public'); // Adjust storage path as needed
         } else {
             // Handle the case where no image is provided
-            $fileName = null;
+            $fileName = $admin['image'];
         }
 
         $admin->update([

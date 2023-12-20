@@ -11,7 +11,7 @@
                 <form action="{{ url('login') }}" method="post" >
                 {!! csrf_field() !!}
                     <label for="email">Email</label><br>
-                    <input type="email" name="email" id="email" class="form-control" ><br>
+                    <input type="email" name="email" id="email" class="form-control" value="{{session('email')}}"><br>
                     <h6 style="color:red;">{{ session('error_email') }}</h6>
 
 
@@ -34,5 +34,6 @@
     <div class="col-lg-4">
     </div>
 </div>
+
 
 @stop
