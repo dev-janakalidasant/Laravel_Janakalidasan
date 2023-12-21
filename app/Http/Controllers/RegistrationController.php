@@ -25,11 +25,10 @@ class RegistrationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function logout()
+    public function logout(Request $request): RedirectResponse
     {
-        Auth::logout();
-    
-        // Redirect to the login page after logout
+        // Auth::logout();
+        $request->session()->forget('user_data');
         return redirect('/');
     }
     public function login(Request $request): RedirectResponse

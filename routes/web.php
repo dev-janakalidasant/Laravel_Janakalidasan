@@ -25,16 +25,16 @@ Route::resource("/register", RegistrationController::class);
 Route::post("/admin", [RegistrationController::class,'store']);
 
 
-Route::resource("/student", StudentController::class);
+Route::resource("/student", StudentController::class) ->middleware('customauth');
 Route::post("/login", [RegistrationController::class,'login']);
-Route::resource("/dashboard", StudentController::class);
+Route::resource("/dashboard", StudentController::class)->middleware('customauth');
 
 
 //profile
-Route::resource("/profile", ProfileController::class);
-Route::post("/createprofile", [ProfileController::class,'store']);
+Route::resource("/profile", ProfileController::class)->middleware('customauth');
+Route::post("/createprofile", [ProfileController::class,'store'])->middleware('customauth');
 
-Route::get("/profileUpdate", [ProfileController::class,'edit']);
-Route::post("/updateprofile", [ProfileController::class,'update']);
+Route::get("/profileUpdate", [ProfileController::class,'edit'])->middleware('customauth');
+Route::post("/updateprofile", [ProfileController::class,'update'])->middleware('customauth');
 
-Route::get("/logout", [RegistrationController::class,'logout']);
+Route::get("/logout", [RegistrationController::class,'logout'])->middleware('customauth');
